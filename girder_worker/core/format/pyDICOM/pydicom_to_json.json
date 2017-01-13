@@ -1,0 +1,7 @@
+{
+    "name": "pyDICOM to JSON",
+    "inputs": [{"name": "input", "type": "pyDICOM", "format": "pyDICOM"}],
+    "outputs": [{"name": "output", "type": "pyDICOM", "format": "json"}],
+    "script_uri": "file://pydicom_to_json.py",
+    "mode": "python"
+}
