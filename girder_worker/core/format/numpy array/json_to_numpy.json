@@ -1,0 +1,7 @@
+{
+    "name": "JSON to NumPy",
+    "inputs": [{"name": "input", "type": "numpy.ndarray", "format": "json"}],
+    "outputs": [{"name": "output", "type": "numpy.ndarray", "format": "numpy.ndarray"}],
+    "script_uri": "file://json_to_numpy.py",
+    "mode": "python"
+}
