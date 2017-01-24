@@ -11,7 +11,9 @@ task = {
         {'name': 'a', 'type': 'table', 'format': 'objectlist'},
         {'name': 'b', 'type': 'table', 'format': 'objectlist'}
     ],
-    'outputs': [{'name': 'c', 'type': 'table', 'format': 'objectlist'}],
+    'outputs': [
+        {'name': 'c', 'type': 'table', 'format': 'objectlist'}
+    ],
     'script': 'c = a + b',
     'mode': 'python'
 }
