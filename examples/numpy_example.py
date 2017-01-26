@@ -13,8 +13,11 @@ task = {
         {'name': 'a', 'type': 'numpy', 'format': 'ndarray'},
         {'name': 'b', 'type': 'numpy', 'format': 'ndarray'}
     ],
-    'outputs': [{'name': 'c', 'type': 'numpy', 'format': 'ndarray'}],
-    'script': 'c = a + b',
+    'outputs': [
+        {'name': 'c', 'type': 'numpy', 'format': 'ndarray'},
+        {'name': 'f', 'type': 'boolean', 'format': 'boolean'}
+    ],
+    'script': 'import numpy as np; c = a + b; f = isinstance(c, np.ndarray)',
     'mode': 'python'
 }
 
@@ -24,7 +27,8 @@ async_result = celeryapp.send_task('girder_worker.run', [task], {
         'b': {'format': 'ndarray', 'data': np.array([[2, 4, 6], [1, 3, 5]])}
     },
     'outputs': {
-        'c': {'format': 'ndarray', 'uri': 'file://output.json'}
+        'c': {'format': 'ndarray', 'uri': 'file://output.json'},
+        'f': {'format': 'boolean', 'uri': 'file://output.json'}
     }
 })
 

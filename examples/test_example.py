@@ -27,26 +27,26 @@ async_result = celeryapp.send_task('girder_worker.run', [task], {
 })
 
 task2 = {
-    'name': 'int test',
+    'name': 'txt test',
     'inputs': [
-        {'name': 'a', 'type': 'integer', 'format': 'integer'},
-        {'name': 'b', 'type': 'integer', 'format': 'integer'}
+        {'name': 'a', 'type': 'string', 'format': 'string'},
+        {'name': 'b', 'type': 'string', 'format': 'string'}
     ],
     'outputs': [
-        {'name': 'c', 'type': 'integer', 'format': 'integer'},
+        {'name': 'c', 'type': 'string', 'format': 'string'},
         {'name': 'f', 'type': 'boolean', 'format': 'boolean'}
     ],
-    'script': 'c = a + b; f = isinstance(c, int)',
+    'script': 'c = a + b; f = isinstance(a, str)',
     'mode': 'python'
 }
 
 async_result2 = celeryapp.send_task('girder_worker.run', [task2], {
     'inputs': {
-        'a': {'format': 'integer', 'data': 100},
-        'b': {'format': 'integer', 'data': 11}
+        'a': {'format': 'string', 'data': "hello "},
+        'b': {'format': 'string', 'data': "world"}
     },
     'outputs': {
-        'c': {'format': 'integer', 'uri': 'file://output.json'},
+        'c': {'format': 'string', 'uri': 'file://output.json'},
         'f': {'format': 'boolean', 'uri': 'file://output.json'}
     }
 })
