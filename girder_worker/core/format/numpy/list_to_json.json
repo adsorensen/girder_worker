@@ -1,0 +1,7 @@
+{
+    "name": "List to JSON",
+    "inputs": [{"name": "input", "type": "numpy", "format": "list"}],
+    "outputs": [{"name": "output", "type": "numpy", "format": "json"}],
+    "script_uri": "file://list_to_json.py",
+    "mode": "python"
+}

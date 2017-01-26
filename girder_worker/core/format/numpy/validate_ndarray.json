@@ -1,0 +1,6 @@
+{
+    "inputs": [{"name": "input", "type": "numpy", "format": "ndarray"}],
+    "outputs": [{"name": "output", "type": "boolean", "format": "boolean"}],
+    "script": "import numpy as np; output = isinstance(input, np.ndarray)",
+    "mode": "python"
+}

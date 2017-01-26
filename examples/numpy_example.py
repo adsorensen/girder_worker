@@ -1,5 +1,5 @@
 import celery
-import numpy
+import numpy as np
 import scipy
 
 celeryapp = celery.Celery(
@@ -10,21 +10,21 @@ celeryapp = celery.Celery(
 task = {
     'name': 'append_tables',
     'inputs': [
-        {'name': 'a', 'type': 'numpy', 'format': 'numpy_ndarray'},
-        {'name': 'b', 'type': 'numpy', 'format': 'numpy_ndarray'}
+        {'name': 'a', 'type': 'numpy', 'format': 'ndarray'},
+        {'name': 'b', 'type': 'numpy', 'format': 'ndarray'}
     ],
-    'outputs': [{'name': 'c', 'type': 'numpy', 'format': 'numpy_ndarray'}],
+    'outputs': [{'name': 'c', 'type': 'numpy', 'format': 'ndarray'}],
     'script': 'c = a + b',
     'mode': 'python'
 }
 
 async_result = celeryapp.send_task('girder_worker.run', [task], {
     'inputs': {
-        'a': {'format': 'numpy_ndarray', 'data': ([1, 2, 3], [4, 5, 6])},
-        'b': {'format': 'numpy_ndarray', 'data': ([2, 4, 6], [1, 3, 5])}
+        'a': {'format': 'ndarray', 'data': np.array([[1, 2, 3], [4, 5, 6]])},
+        'b': {'format': 'ndarray', 'data': np.array([[2, 4, 6], [1, 3, 5]])}
     },
     'outputs': {
-        'c': {'format': 'numpy_ndarray', 'uri': 'file://output.json'}
+        'c': {'format': 'ndarray', 'uri': 'file://output.json'}
     }
 })
 
