@@ -307,6 +307,7 @@ def import_default_converters():
         'number',
         'number_list',
         'numpy',
+        'pydicom',
         'python',
         'string',
         'string_list',
