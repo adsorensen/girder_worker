@@ -5,10 +5,7 @@ import scipy
 celeryapp = celery.Celery(
     'girder_worker',
     backend='amqp://guest@localhost/',
-    broker='amqp://guest@localhost/',
-    task_serializer='pickle',
-    result_serializer='pickle',
-    serializer='pickle')
+    broker='amqp://guest@localhost/')
 
 task = {
     'name': 'add_numpy_arrays',
@@ -33,6 +30,6 @@ async_result = celeryapp.send_task('girder_worker.run', [task], {
         'c': {'format': 'json', 'uri': 'file://output.json'},
         'f': {'format': 'boolean', 'uri': 'file://output.json'}
     }
-}, result_serializer='pickle', serializer='pickle')
+}, serializer='pickle')
 
 print async_result.get()
