@@ -7,8 +7,9 @@ celeryapp = celery.Celery(
     backend='amqp://guest@localhost/',
     broker='amqp://guest@localhost/')
 
+
 task = {
-    'name': 'append_tables',
+    'name': 'add_numpy_arrays',
     'inputs': [
         {'name': 'a', 'type': 'numpy', 'format': 'ndarray'},
         {'name': 'b', 'type': 'numpy', 'format': 'ndarray'}
@@ -21,15 +22,17 @@ task = {
     'mode': 'python'
 }
 
+
 async_result = celeryapp.send_task('girder_worker.run', [task], {
     'inputs': {
         'a': {'format': 'ndarray', 'data': np.array([[1, 2, 3], [4, 5, 6]])},
-        'b': {'format': 'ndarray', 'data': np.array([[2, 4, 6], [1, 3, 5]])}
+        'b': {'format': 'ndarray', 'data': np.array([[10, 20, 30], [40, 50, 60]])}
     },
     'outputs': {
-        'c': {'format': 'ndarray', 'uri': 'file://output.json'},
-        'f': {'format': 'boolean', 'uri': 'file://output.json'}
+        'c': {'format': 'ndarray', 'uri': 'file://output.p'},
+        'f': {'format': 'boolean', 'uri': 'file://output.p'}
     }
-})
+}, result_serializer='pickle', serializer='pickle')
+
 
 print async_result.get()
