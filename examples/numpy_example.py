@@ -30,8 +30,8 @@ async_result = celeryapp.send_task('girder_worker.run', [task], {
         'b': {'format': 'ndarray', 'data': np.array([[10, 20, 30], [40, 50, 60]])}
     },
     'outputs': {
-        'c': {'format': 'ndarray', 'uri': 'file://output.p'},
-        'f': {'format': 'boolean', 'uri': 'file://output.p'}
+        'c': {'format': 'json', 'uri': 'file://output.json'},
+        'f': {'format': 'boolean', 'uri': 'file://output.json'}
     }
 }, result_serializer='pickle', serializer='pickle')
 
