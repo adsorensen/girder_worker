@@ -1,7 +1,0 @@
-{
-    "name": "List to ndarray",
-    "inputs": [{"name": "input", "type": "numpy", "format": "list"}],
-    "outputs": [{"name": "output", "type": "numpy", "format": "ndarray"}],
-    "script_uri": "file://list_to_ndarray.py",
-    "mode": "python"
-}
