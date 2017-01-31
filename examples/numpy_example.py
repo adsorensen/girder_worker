@@ -5,8 +5,10 @@ import scipy
 celeryapp = celery.Celery(
     'girder_worker',
     backend='amqp://guest@localhost/',
-    broker='amqp://guest@localhost/')
-
+    broker='amqp://guest@localhost/',
+    task_serializer='pickle',
+    result_serializer='pickle',
+    serializer='pickle')
 
 task = {
     'name': 'add_numpy_arrays',
@@ -22,7 +24,6 @@ task = {
     'mode': 'python'
 }
 
-
 async_result = celeryapp.send_task('girder_worker.run', [task], {
     'inputs': {
         'a': {'format': 'ndarray', 'data': np.array([[1, 2, 3], [4, 5, 6]])},
@@ -33,6 +34,5 @@ async_result = celeryapp.send_task('girder_worker.run', [task], {
         'f': {'format': 'boolean', 'uri': 'file://output.p'}
     }
 }, result_serializer='pickle', serializer='pickle')
-
 
 print async_result.get()
