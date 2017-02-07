@@ -1,6 +1,5 @@
 import celery
 import numpy as np
-import scipy
 
 celeryapp = celery.Celery(
     'girder_worker',
