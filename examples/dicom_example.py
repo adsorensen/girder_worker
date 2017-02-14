@@ -16,7 +16,7 @@ task = {
         {'name': 'f', 'type': 'boolean', 'format': 'boolean'}
     ],
     'script': ('import dicom as di; a.ContentDate = \'200\';'
-        ' c = a.ContentDate; f = isinstance(a, di.dataset.FileDataset)'),
+        ' c = a.ContentDate; b = a; f = isinstance(b, di.dataset.FileDataset)'),
     'mode': 'python'
 }
 
