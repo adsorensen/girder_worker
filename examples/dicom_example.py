@@ -16,7 +16,7 @@ task = {
         {'name': 'f', 'type': 'boolean', 'format': 'boolean'}
     ],
     'script': ('import dicom as di; a.ContentDate = \'200\';'
-        ' c = a.ContentDate; b = a; f = isinstance(b, di.dataset.FileDataset)'),
+    'c = a.ContentDate; b = a; f = isinstance(b, di.dataset.FileDataset)'),
     'mode': 'python'
 }
 
@@ -30,4 +30,5 @@ async_result = celeryapp.send_task('girder_worker.run', [task], {
     }
 }, serializer='pickle')
 
+#serializer='pickle'
 print async_result.get()
