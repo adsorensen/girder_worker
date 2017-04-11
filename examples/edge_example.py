@@ -1,7 +1,4 @@
 import celery
-import numpy as np
-import scipy
-import matplotlib.pyplot as plt
 
 celeryapp = celery.Celery(
     'girder_worker',

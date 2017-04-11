@@ -1,5 +1,4 @@
 import celery
-import numpy as np
 
 celeryapp = celery.Celery(
     'girder_worker',
@@ -7,7 +6,7 @@ celeryapp = celery.Celery(
     broker='amqp://guest@localhost/')
 
 task = {
-    'name': 'add_numpy_arrays',
+    'name': 'add numpy arrays',
     'inputs': [
         {'name': 'a', 'type': 'string', 'format': 'text'},
         {'name': 'b', 'type': 'string', 'format': 'text'}
@@ -16,7 +15,9 @@ task = {
         {'name': 'c', 'type': 'numpy', 'format': 'ndarray'},
         {'name': 'f', 'type': 'boolean', 'format': 'boolean'}
     ],
-    'script': ('import numpy as np; data = np.loadtxt(a); data2 = np.loadtxt(b); data = data.astype(int); data2 = data2.astype(int);'
+    'script': ('import numpy as np; data = np.loadtxt(a); '
+    'data2 = np.loadtxt(b); '
+    #'data = data.astype(int); data2 = data2.astype(int);'
     'c = data + data2; f = isinstance(c, np.ndarray);'),
     'mode': 'python'
 }
