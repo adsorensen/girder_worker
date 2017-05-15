@@ -163,7 +163,7 @@ def get_validator_analysis(validator):
     >>> type(analysis) == dict
     True
 
-    Which contains an inputs key
+    Which contains an inputs key:
 
     >>> 'inputs' in analysis
     True
