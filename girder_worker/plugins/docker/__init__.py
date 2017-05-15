@@ -3,7 +3,9 @@ import shutil
 import subprocess
 import tempfile
 import time
-from girder_worker import config
+import docker
+from docker.errors import DockerException
+from girder_worker import config, logger
 
 # Minimum interval in seconds at which to run the docker-gc script
 MIN_GC_INTERVAL = 600
@@ -13,6 +15,8 @@ def before_run(e):
     import executor
     if e.info['task']['mode'] == 'docker':
         executor.validate_task_outputs(e.info['task_outputs'])
+    if not _read_bool_from_config('gc', False):
+        e.info.setdefault('kwargs', {})['_rm_container'] = True
 
 
 def _read_from_config(key, default):
@@ -25,6 +29,16 @@ def _read_from_config(key, default):
         return default
 
 
+def _read_bool_from_config(key, default):
+    """
+    Helper to read Docker specific bool config values from the worker config files.
+    """
+    if config.has_option('docker', key):
+        return config.getboolean('docker', key)
+    else:
+        return default
+
+
 def docker_gc(e):
     """
     Garbage collect containers that have not been run in the last hour using the
@@ -32,6 +46,8 @@ def docker_gc(e):
     the same directory as this file. After that, deletes all images that are
     no longer used by any containers.
     """
+    if not _read_bool_from_config('gc', False):
+        return
     stampfile = os.path.join(config.get('girder_worker', 'tmp_root'), '.dockergcstamp')
     if os.path.exists(stampfile) and time.time() - os.path.getmtime(stampfile) < MIN_GC_INTERVAL:
         return
@@ -39,7 +55,7 @@ def docker_gc(e):
         with open(stampfile, 'w') as f:
             f.write('')
 
-    print('Garbage collecting docker containers and images.')
+    logger.info('Garbage collecting docker containers and images.')
     gc_dir = tempfile.mkdtemp()
 
     try:
@@ -82,17 +98,26 @@ def task_cleanup(e):
     from .executor import DATA_VOLUME
     if e.info['task']['mode'] == 'docker' and '_tempdir' in e.info['kwargs']:
         tmpdir = e.info['kwargs']['_tempdir']
-        cmd = [
-            'docker', 'run', '--rm', '-v', '%s:%s' % (tmpdir, DATA_VOLUME),
-            'busybox', 'chmod', '-R', 'a+rw', DATA_VOLUME
-        ]
-        p = subprocess.Popen(args=cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        out, err = p.communicate()
-        if p.returncode:
-            print('Error setting perms on docker tempdir %s.' % tmpdir)
-            print('STDOUT: ' + out)
-            print('STDERR: ' + err)
-            raise Exception('Docker tempdir chmod returned code %d.' % p.returncode)
+        client = docker.from_env(version='auto')
+        config = {
+            'tty': True,
+            'volumes': {
+                tmpdir: {
+                    'bind': DATA_VOLUME,
+                    'mode': 'rw'
+                }
+            },
+            'detach': False,
+            'remove': True
+        }
+        args = ['chmod', '-R', 'a+rw', DATA_VOLUME]
+
+        try:
+            client.containers.run('busybox:latest', args, **config)
+        except DockerException as dex:
+            logger.error('Error setting perms on docker tempdir %s.' % tmpdir)
+            logger.exception(dex)
+            raise
 
 
 def load(params):
