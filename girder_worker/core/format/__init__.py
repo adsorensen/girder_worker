@@ -181,9 +181,8 @@ def get_validator_analysis(validator):
     try:
         return conv_graph.node[validator]
     except KeyError:
-        print("\n\n\nhere\n\n\n\n")
         raise Exception(
-            'No such validator HERE %s/%s' % (validator.type, validator.format))
+            'No such validator  %s/%s' % (validator.type, validator.format))
 
 
 def import_converters(search_paths):
