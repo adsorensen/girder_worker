@@ -1,5 +1,5 @@
 {
-    "name": "ndarray to JSON",
+    "name": "Ndarray to JSON",
     "inputs": [{"name": "input", "type": "numpy", "format": "ndarray"}],
     "outputs": [{"name": "output", "type": "numpy", "format": "json"}],
     "script_uri": "file://ndarray_to_json.py",
