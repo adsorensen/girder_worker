@@ -1,5 +1,5 @@
 {
-    "inputs": [{"name": "input", "type": "pyDICOM", "format": "json"}],
+    "inputs": [{"name": "input", "type": "pydicom", "format": "json"}],
     "outputs": [{"name": "output", "type": "boolean", "format": "boolean"}],
     "script": "output = isinstance(input, (str, unicode))",
     "extensions": ["dcm-json"],

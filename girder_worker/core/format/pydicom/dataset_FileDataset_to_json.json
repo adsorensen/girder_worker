@@ -1,5 +1,5 @@
 {
-    "name": "pyDICOM to JSON",
+    "name": "FileDataset to JSON",
     "inputs": [{"name": "input", "type": "pydicom", "format": "dataset.FileDataset"}],
     "outputs": [{"name": "output", "type": "pydicom", "format": "json"}],
     "script_uri": "file://dataset_FileDataset_to_json.py",
